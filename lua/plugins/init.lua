@@ -1,4 +1,5 @@
 return {
+  -- others
   {
     "stevearc/conform.nvim",
     config = function()
@@ -47,6 +48,13 @@ return {
   },
   -- python
   {
+    "jose-elias-alvarez/null-ls.nvim",
+    ft = {"python"},
+    opts = function()
+      return require "custom.configs.null-ls"
+    end,
+  },
+  {
     "neovim/nvim-lspconfig",
     config = function ()
       require "configs.lspconfig"
@@ -60,7 +68,7 @@ return {
   		ensure_installed = {
   			"lua-language-server", "stylua",
   			"html-lsp", "css-lsp" , "prettier", "rust-analyzer",
-        "pyright",
+        "pyright", "mypy", "ruff", "black",
   		},
   	},
   },
