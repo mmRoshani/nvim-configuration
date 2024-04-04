@@ -9,6 +9,8 @@ if not vim.loop.fs_stat(lazypath) then
   vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
 end
 
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
 vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
