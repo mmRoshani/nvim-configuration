@@ -1,5 +1,27 @@
 return {
   -- others
+  { "nvim-neotest/nvim-nio" },
+  {
+    "mfussenegger/nvim-dap",
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = "mfussenegger/nvim-dap",
+    config = function()
+      local dap = require("dap")
+      local dapui = require("dapui")
+      dapui.setup()
+      dap.listeners.after.event_initialized["dapui_config"] = function ()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function ()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function ()
+      dapui.close()
+      end
+    end,
+  },
   {
     "stevearc/conform.nvim",
     config = function()
@@ -18,9 +40,6 @@ return {
     config = function (_, opts)
       require("rust-tools").setup(opts)
     end
-  },
-  {
-    "mfussenegger/nvim-dap",
   },
   {
     "saecki/crates.nvim",
@@ -61,6 +80,18 @@ return {
       require "configs.lspconfig"
     end
   },
+  {
+    "mfussenegger/nvim-dap-python",
+    ft = "python",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "rcarriga/nvim-dap-ui",
+    },
+    config = function (_, opts)
+      local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+      require("dap-python").setup(path)
+    end,
+  },
   -- LSP
   {
   	"williamboman/mason.nvim",
@@ -68,7 +99,7 @@ return {
   		ensure_installed = {
   			"lua-language-server", "stylua",
   			"html-lsp", "css-lsp" , "prettier", "rust-analyzer",
-        "pyright", "mypy", "ruff", "black",
+        "pyright", "mypy", "ruff", "black", "debugpy",
   		},
   	},
   },
